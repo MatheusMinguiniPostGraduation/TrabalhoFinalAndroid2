@@ -1,4 +1,6 @@
-# TrabalhoFinalAndroid2 que contempla a finalização da disciplina de Android 2, no curso de Pós-graduação em desenvolvimento de aplicações para dispositivos móveis.
+# Acessando WebServices no padrão REST com Retrofit
 
-O trabalho consiste em acessar uma API externa usando a tecnologia Retrofit e o padrão de programação REST. NA parte de layout, Fragments bem como Toolbar são obrigatórios.
+
+O projeto contempla a finalização da segunda disciplina de Android no curso de Pós-graduação em desenvolvimento de aplicações para dispositivos móveis.
+Uma API externa usando a tecnologia Retrofit e o padrão de programação REST é acessada. Na parte de layout, Fragments bem como Toolbar são obrigatórios.
 
