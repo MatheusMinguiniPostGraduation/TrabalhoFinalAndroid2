@@ -33,6 +33,11 @@ class MainFragment : Fragment() {
                 if (url != null) {
                     layoutView.movieImageView.loadImageIntoView(url)
                 }
+
+                layoutView.fullTitleTextView.text = obj.title;
+                layoutView.yearTextView.text = obj.year;
+                layoutView.castTextView.text = obj.actors?.replace(",", "\n")
+
             }
         }
         return layoutView
