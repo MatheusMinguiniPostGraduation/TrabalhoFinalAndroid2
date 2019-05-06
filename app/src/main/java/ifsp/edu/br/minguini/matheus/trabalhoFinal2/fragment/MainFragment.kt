@@ -24,7 +24,7 @@ class MainFragment : Fragment() {
         val moviesAPI = OmdbGateway(activity as MainActivity)
 
         layoutView.searchMovieButton.setOnClickListener {
-            moviesAPI.searchMovie(layoutView.movieDescriptionEditText.text.toString())
+            moviesAPI.searchMovie(layoutView.movieDescripitionEditText.text.toString())
         }
 
         moviesAPI.callback = object : MovieCallbackInterface {
@@ -41,6 +41,13 @@ class MainFragment : Fragment() {
             }
         }
         return layoutView
+    }
+
+
+    fun setMovieInformationVisibilityToTrue(layoutView : View){
+        layoutView.fullTitleTextView.visibility = View.VISIBLE;
+        layoutView.yearTextView.visibility = View.VISIBLE;
+        layoutView.castTextView.visibility = View.VISIBLE;
     }
 
     fun ImageView.loadImageIntoView(url: String) {
