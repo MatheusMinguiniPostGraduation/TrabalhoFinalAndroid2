@@ -10,6 +10,7 @@ import ifsp.edu.br.minguini.matheus.trabalhoFinal2.util.ConstantesUtil.APP_KEY_F
 import ifsp.edu.br.minguini.matheus.trabalhoFinal2.util.ConstantesUtil.OMDB_API_KEY
 import ifsp.edu.br.minguini.matheus.trabalhoFinal2.util.ConstantesUtil.URL_BASE
 import kotlinx.android.synthetic.main.frame_main.*
+import kotlinx.android.synthetic.main.main_fragment.view.*
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -53,24 +54,37 @@ class OmdbGateway(val mainActivity: MainActivity) {
     // Cria um objeto, a partir da Interface Retrofit, que contém as funções de requisição
     val api: OmdbApi = retrofit.create(OmdbApi::class.java)
 
-    fun searchMovie(titulo: String) {
+    fun searchMovie(titulo: String,  id: String) {
 
-        api.getMovie(titulo).enqueue(
-            object : Callback<MovieDTO> {
+        if(id.isEmpty() && titulo.isEmpty()){
+            mainActivity.mainLl.snackbar("Please, to look the movie up, type the description or/and the movie identifier.");
+        }else{
+            var parameter = id
 
-                override fun onFailure(call: Call<MovieDTO>, t: Throwable) {
-                    mainActivity.mainLl.snackbar("Erro ao consultar API: " + t.message);
-                }
-
-                override fun onResponse(call: Call<MovieDTO>, response: Response<MovieDTO>) {
-                    val body = response.body()
-                    if (body != null) {
-                        callback?.onResponse(body)
-                    }
-                }
-
+            if(id.isEmpty()){
+                parameter = titulo
             }
-        )
+
+            api.getMovie(parameter).enqueue(
+                object : Callback<MovieDTO> {
+
+                    override fun onFailure(call: Call<MovieDTO>, t: Throwable) {
+                        mainActivity.mainLl.snackbar("Erro ao consultar API: " + t.message);
+                    }
+
+                    override fun onResponse(call: Call<MovieDTO>, response: Response<MovieDTO>) {
+                        val body = response.body()
+                        if (body != null) {
+                            callback?.onResponse(body)
+                        }
+                    }
+
+                }
+            )
+        }
+
+
+
     }
 }
 

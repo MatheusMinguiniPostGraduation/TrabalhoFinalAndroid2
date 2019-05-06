@@ -24,7 +24,9 @@ class MainFragment : Fragment() {
         val moviesAPI = OmdbGateway(activity as MainActivity)
 
         layoutView.searchMovieButton.setOnClickListener {
-            moviesAPI.searchMovie(layoutView.movieDescripitionEditText.text.toString())
+            val description = layoutView.movieDescripitionEditText.text.toString()
+            val id = layoutView.movieIdEditText.text.toString()
+            moviesAPI.searchMovie(description, id)
         }
 
         moviesAPI.callback = object : MovieCallbackInterface {
