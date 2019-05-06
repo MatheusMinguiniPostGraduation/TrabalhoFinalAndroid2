@@ -34,23 +34,27 @@ class MainFragment : Fragment() {
                     layoutView.movieImageView.loadImageIntoView(url)
                 }
 
-                layoutView.fullTitleTextView.text = obj.title;
-                layoutView.yearTextView.text = obj.year;
-                layoutView.castTextView.text = obj.actors?.replace(",", "\n")
-
+                setMovieInformationVisibilityToTrue(layoutView);
+                setInformationIntoTheScreen(layoutView, obj)
             }
         }
         return layoutView
     }
 
+    private fun setInformationIntoTheScreen(layoutView: View, obj: MovieDTO?) {
+        layoutView.fullTitleTextView.text = obj?.title;
+        layoutView.yearTextView.text = obj?.year;
+        layoutView.castTextView.text = obj?.actors?.replace(",", "\n")
+    }
 
-    fun setMovieInformationVisibilityToTrue(layoutView : View){
+
+    private fun setMovieInformationVisibilityToTrue(layoutView : View){
         layoutView.fullTitleTextView.visibility = View.VISIBLE;
         layoutView.yearTextView.visibility = View.VISIBLE;
         layoutView.castTextView.visibility = View.VISIBLE;
     }
 
-    fun ImageView.loadImageIntoView(url: String) {
+    private fun ImageView.loadImageIntoView(url: String) {
         Picasso.get().load(url).into(this)
     }
 
