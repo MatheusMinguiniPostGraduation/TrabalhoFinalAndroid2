@@ -1,7 +1,5 @@
 package ifsp.edu.br.minguini.matheus.trabalhoFinal2.Gateway
 
-import android.widget.ImageView
-import com.squareup.picasso.Picasso
 import ifsp.edu.br.minguini.matheus.trabalhoFinal2.Dto.MovieDTO
 import ifsp.edu.br.minguini.matheus.trabalhoFinal2.MainActivity
 import ifsp.edu.br.minguini.matheus.trabalhoFinal2.interfaces.MovieCallbackInterface
@@ -10,7 +8,6 @@ import ifsp.edu.br.minguini.matheus.trabalhoFinal2.util.ConstantesUtil.APP_KEY_F
 import ifsp.edu.br.minguini.matheus.trabalhoFinal2.util.ConstantesUtil.OMDB_API_KEY
 import ifsp.edu.br.minguini.matheus.trabalhoFinal2.util.ConstantesUtil.URL_BASE
 import kotlinx.android.synthetic.main.frame_main.*
-import kotlinx.android.synthetic.main.main_fragment.view.*
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -54,37 +51,81 @@ class OmdbGateway(val mainActivity: MainActivity) {
     // Cria um objeto, a partir da Interface Retrofit, que contém as funções de requisição
     val api: OmdbApi = retrofit.create(OmdbApi::class.java)
 
-    fun searchMovie(titulo: String,  id: String) {
+    fun searchMovie(title: String, id: String) {
 
-        if(id.isEmpty() && titulo.isEmpty()){
+        if(isParametersEmpty(id, title)){
             mainActivity.mainLl.snackbar("Please, to look the movie up, type the description or/and the movie identifier.");
         }else{
-            var parameter = id
 
-            if(id.isEmpty()){
-                parameter = titulo
+            if(isAllParametersFullfilled(id, title)){
+                getMovieByIdAndTitle(id, title);
+            }else if(id.isEmpty()){
+                getMovieByTitle(title);
+            }else{
+                getMovieById(id)
             }
-
-            api.getMovie(parameter).enqueue(
-                object : Callback<MovieDTO> {
-
-                    override fun onFailure(call: Call<MovieDTO>, t: Throwable) {
-                        mainActivity.mainLl.snackbar("Erro ao consultar API: " + t.message);
-                    }
-
-                    override fun onResponse(call: Call<MovieDTO>, response: Response<MovieDTO>) {
-                        val body = response.body()
-                        if (body != null) {
-                            callback?.onResponse(body)
-                        }
-                    }
-
-                }
-            )
         }
+    }
 
+    private fun isAllParametersFullfilled(id: String, title: String) = id.isBlank() && title.isBlank()
 
+    private fun isParametersEmpty(id: String, titulo: String) = id.isEmpty() && titulo.isEmpty()
 
+    fun getMovieByIdAndTitle(id: String, title: String){
+        api.getMovieByTitle(title).enqueue(
+            object : Callback<MovieDTO> {
+
+                override fun onFailure(call: Call<MovieDTO>, t: Throwable) {
+                    mainActivity.mainLl.snackbar("There was an error consulting the API: " + t.message);
+                }
+
+                override fun onResponse(call: Call<MovieDTO>, response: Response<MovieDTO>) {
+                    val body = response.body()
+                    if (body != null) {
+                        callback?.onResponse(body)
+                    }
+                }
+
+            }
+        )
+    }
+
+    fun getMovieByTitle(title: String){
+        api.getMovieByTitle(title).enqueue(
+            object : Callback<MovieDTO> {
+
+                override fun onFailure(call: Call<MovieDTO>, t: Throwable) {
+                    mainActivity.mainLl.snackbar("There was an error consulting the API: " + t.message);
+                }
+
+                override fun onResponse(call: Call<MovieDTO>, response: Response<MovieDTO>) {
+                    val body = response.body()
+                    if (body != null) {
+                        callback?.onResponse(body)
+                    }
+                }
+
+            }
+        )
+    }
+
+    fun getMovieById(id: String){
+        api.getMovieByTitle(id).enqueue(
+            object : Callback<MovieDTO> {
+
+                override fun onFailure(call: Call<MovieDTO>, t: Throwable) {
+                    mainActivity.mainLl.snackbar("There was an error consulting the API: " + t.message);
+                }
+
+                override fun onResponse(call: Call<MovieDTO>, response: Response<MovieDTO>) {
+                    val body = response.body()
+                    if (body != null) {
+                        callback?.onResponse(body)
+                    }
+                }
+
+            }
+        )
     }
 }
 
