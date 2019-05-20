@@ -17,6 +17,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.lang.Double.parseDouble
 
 
 class OmdbGateway(val mainActivity: MainActivity) {
@@ -56,14 +57,24 @@ class OmdbGateway(val mainActivity: MainActivity) {
         if(isParametersEmpty(id, title)){
             mainActivity.mainLl.snackbar("Please, to look the movie up, type the description or/and the movie identifier.");
         }else{
-
-            if(isAllParametersFullfilled(id, title)){
+            if(!validateIdField(id, title)){
+                mainActivity.mainLl.snackbar("Please, the ID must contain only numeric digits.");
+            }else if(isAllParametersFullfilled(id, title)){
                 getMovieByIdAndTitle(id, title);
             }else if(id.isEmpty()){
-                getMovieByTitle(title);
+                getMovieByTitle(title);12312312
             }else{
                 getMovieById(id)
             }
+        }
+    }
+
+    private fun validateIdField(id: String, title: String) : Boolean{
+        try {
+            parseDouble(id)
+            return true
+        } catch (e: NumberFormatException) {
+            return false
         }
     }
 
