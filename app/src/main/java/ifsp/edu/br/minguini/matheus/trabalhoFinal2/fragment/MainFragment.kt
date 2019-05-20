@@ -2,6 +2,7 @@ package ifsp.edu.br.minguini.matheus.trabalhoFinal2.fragment
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.text.Editable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -28,6 +29,11 @@ class MainFragment : Fragment() {
             val id = layoutView.movieIdEditText.text.toString()
             moviesAPI.searchMovie(description, id)
         }
+
+        layoutView.wipeFormFieldsButton.setOnClickListener({
+            layoutView.movieDescripitionEditText.text.clear()
+            layoutView.movieIdEditText.text.clear()
+        })
 
         moviesAPI.callback = object : MovieCallbackInterface {
             override fun onResponse(obj: MovieDTO) {
@@ -59,5 +65,4 @@ class MainFragment : Fragment() {
     private fun ImageView.loadImageIntoView(url: String) {
         Picasso.get().load(url).into(this)
     }
-
 }
