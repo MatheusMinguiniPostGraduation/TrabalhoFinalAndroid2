@@ -4,6 +4,8 @@ import ifsp.edu.br.minguini.matheus.trabalhoFinal2.MainActivity
 import ifsp.edu.br.minguini.matheus.trabalhoFinal2.interfaces.OmdbApi
 import ifsp.edu.br.minguini.matheus.trabalhoFinal2.model.OmdbImpl
 import ifsp.edu.br.minguini.matheus.trabalhoFinal2.util.ConstantesUtil.APP_KEY_FIELD
+import ifsp.edu.br.minguini.matheus.trabalhoFinal2.util.ConstantesUtil.ID_MUST_BE_A_NUMBER_MESSAGE
+import ifsp.edu.br.minguini.matheus.trabalhoFinal2.util.ConstantesUtil.NO_FILTERS_PROVIDED_MESSAGE
 import ifsp.edu.br.minguini.matheus.trabalhoFinal2.util.ConstantesUtil.OMDB_API_KEY
 import ifsp.edu.br.minguini.matheus.trabalhoFinal2.util.ConstantesUtil.URL_BASE
 import kotlinx.android.synthetic.main.frame_main.*
@@ -19,7 +21,6 @@ import java.lang.Double.parseDouble
 class OmdbGateway(val mainActivity: MainActivity) {
 
     val okHttpClientBuilder: OkHttpClient.Builder = OkHttpClient.Builder()
-
 
     // Instanciando o cliente HTTP
     init {
@@ -43,27 +44,24 @@ class OmdbGateway(val mainActivity: MainActivity) {
     val retrofit: Retrofit = Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(URL_BASE)
         .client(okHttpClientBuilder.build()).build()
 
-
     // Cria um objeto, a partir da Interface Retrofit, que contém as funções de requisição
     val api: OmdbApi = retrofit.create(OmdbApi::class.java)
 
-
     fun searchMovie(title: String, id: String) {
         if(isParametersEmpty(id, title)){
-            mainActivity.mainLl.snackbar("Please, to look the movie up, type the description or/and the movie identifier.");
+            mainActivity.mainLl.snackbar(NO_FILTERS_PROVIDED_MESSAGE);
         }else{
             if(!id.isBlank()) {
                 if(validateIdField(id, title)){
                     getMovieById(id)
                 }else {
-                    mainActivity.mainLl.snackbar("Please, the ID must contain only numeric digits.");
+                    mainActivity.mainLl.snackbar(ID_MUST_BE_A_NUMBER_MESSAGE);
                 }
             }else{
                 getMovieByTitle(title)
             }
         }
     }
-
 
     val implementation : OmdbImpl = OmdbImpl(retrofit, mainActivity)
 
@@ -85,8 +83,5 @@ class OmdbGateway(val mainActivity: MainActivity) {
             return false
         }
     }
-
-
-
 }
 
