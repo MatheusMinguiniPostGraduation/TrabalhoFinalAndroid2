@@ -5,6 +5,8 @@ import ifsp.edu.br.minguini.matheus.trabalhoFinal2.dto.MovieDTO
 import ifsp.edu.br.minguini.matheus.trabalhoFinal2.interfaces.MovieCallbackInterface
 import ifsp.edu.br.minguini.matheus.trabalhoFinal2.interfaces.OmdbApi
 import ifsp.edu.br.minguini.matheus.trabalhoFinal2.util.ConstantesUtil
+import ifsp.edu.br.minguini.matheus.trabalhoFinal2.util.ConstantesUtil.API_ERROR_MESSAGE
+import ifsp.edu.br.minguini.matheus.trabalhoFinal2.util.ConstantesUtil.NO_MOVIE_FOUND_MESSAGE
 import kotlinx.android.synthetic.main.frame_main.*
 import okhttp3.OkHttpClient
 import org.jetbrains.anko.design.snackbar
@@ -25,8 +27,6 @@ class OmdbImpl : Callback<MovieDTO>{
 
     var callback: MovieCallbackInterface? = null
 
-    constructor()
-
     constructor(retrofit : Retrofit, mainActivity: MainActivity){
         if(api == null){
             Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(ConstantesUtil.URL_BASE).client(okHttpClientBuilder.build()).build()
@@ -35,8 +35,10 @@ class OmdbImpl : Callback<MovieDTO>{
         this.mainActivity = mainActivity
     }
 
+
+
     override fun onFailure(call: Call<MovieDTO>, t: Throwable) {
-        mainActivity?.mainLl?.snackbar("There was an error consulting the API: " + t.message)
+        mainActivity?.mainLl?.snackbar(API_ERROR_MESSAGE + t.message)
     }
 
     override fun onResponse(call: Call<MovieDTO>, response: Response<MovieDTO>) {
@@ -44,7 +46,7 @@ class OmdbImpl : Callback<MovieDTO>{
         if (body != null) {
             callback?.onResponse(body)
         }else{
-            mainActivity?.mainLl?.snackbar("There was no movie found with the provided filter")
+            mainActivity?.mainLl?.snackbar(NO_MOVIE_FOUND_MESSAGE)
         }
     }
 
