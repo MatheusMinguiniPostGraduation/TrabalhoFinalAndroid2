@@ -1,4 +1,4 @@
-package ifsp.edu.br.minguini.matheus.trabalhoFinal2.Dto
+package ifsp.edu.br.minguini.matheus.trabalhoFinal2.dto
 
 import com.google.gson.annotations.SerializedName
 

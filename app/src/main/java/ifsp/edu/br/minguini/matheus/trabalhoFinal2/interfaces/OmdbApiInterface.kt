@@ -1,6 +1,6 @@
 package ifsp.edu.br.minguini.matheus.trabalhoFinal2.interfaces
 
-import ifsp.edu.br.minguini.matheus.trabalhoFinal2.Dto.MovieDTO
+import ifsp.edu.br.minguini.matheus.trabalhoFinal2.dto.MovieDTO
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
